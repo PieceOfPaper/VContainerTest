@@ -6,9 +6,9 @@ using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
 
-public class IuiTestPresenter : IuiBasePresenterTemplate<IuiTest>
+public class UITestPresenter : UIBasePresenterTemplate<UITest>
 {
-    public override string PrefabName => "TODO";
+    public override string PrefabName => "UITest";
     public override UIDepthType UIDepthType => UIDepthType.None;
     
     public PlayerDataManager playerDataManager { get; private set; }
@@ -21,7 +21,7 @@ public class IuiTestPresenter : IuiBasePresenterTemplate<IuiTest>
     }
 }
 
-public class IuiTest : IuiBaseBehaviourTemplate<IuiTestPresenter>
+public class UITest : UIBaseBehaviourTemplate<UITestPresenter>
 {
     protected override void OnInitialized()
     {
@@ -37,5 +37,15 @@ public class IuiTest : IuiBaseBehaviourTemplate<IuiTestPresenter>
     private void Start()
     {
         Debug.Log("UITest.Start");
+    }
+
+    private void OnEnable()
+    {
+        Debug.Log("UITest.OnEnable");
+    }
+
+    private void OnDisable()
+    {
+        Debug.Log("UITest.OnDisable");
     }
 }
