@@ -17,7 +17,7 @@ public abstract class UIBasePresenter : IUIManagerPresenterController
     
     
     protected UIBaseBehaviour m_Behaviour;
-    public UIBaseBehaviour Behaviour => m_Behaviour;
+    UIBaseBehaviour IUIManagerPresenterController.Behaviour => m_Behaviour;
 
     void IUIManagerPresenterController.CreateBehaviour(UIBaseBehaviour behavior)
     {
@@ -97,6 +97,8 @@ public abstract class UIBaseBehaviourTemplate<PT> : UIBaseBehaviour where PT : U
 
 public interface IUIManagerPresenterController
 {
+    UIBaseBehaviour Behaviour { get; }
+
     void CreateBehaviour(UIBaseBehaviour behavior);
     void DestroyBehaviour();
 
@@ -211,18 +213,18 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        if (presenter.Behaviour == null)
-        {
-            LoadUI(type);
-            if (presenter.Behaviour == null)
-            {
-                Debug.Log($"[UIManager] OpenUI - Not Exist Behaviour ({type})");
-                return;
-            }
-        }
-        
         if (presenter is IUIManagerPresenterController controller)
         {
+            if (controller.Behaviour == null)
+            {
+                LoadUI(type);
+                if (controller.Behaviour == null)
+                {
+                    Debug.Log($"[UIManager] OpenUI - Not Exist Behaviour ({type})");
+                    return;
+                }
+            }
+
             controller.OpenBehaviour();
         }
     }
@@ -237,14 +239,14 @@ public class UIManager : MonoBehaviour
             Debug.Log($"[UIManager] CloseUI - Not Exist Presenter ({type})");
             return;
         }
-
-        if (presenter.Behaviour == null)
-        {
-            return;
-        }
         
         if (presenter is IUIManagerPresenterController controller)
         {
+            if (controller.Behaviour == null)
+            {
+                return;
+            }
+
             controller.CloseBehaviour();
         }
     }
